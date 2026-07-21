@@ -1,0 +1,83 @@
+{
+  "checked_at_policy": "Daily by GitHub Actions; manual review required before production data update.",
+  "sources": [
+    {
+      "id": "preppers",
+      "name": "프레퍼스",
+      "url": "https://prepperskorea.com/",
+      "keywords": [
+        "MENU",
+        "파스타",
+        "덮밥",
+        "샐러드"
+      ]
+    },
+    {
+      "id": "salady",
+      "name": "샐러디",
+      "url": "https://salady.com/menu/list_1",
+      "keywords": [
+        "샐러디",
+        "포케볼",
+        "누들볼",
+        "NEW",
+        "선재"
+      ]
+    },
+    {
+      "id": "salady_event",
+      "name": "샐러디 이벤트",
+      "url": "https://salady.com/_subpage/kor/news/event.php?viewMode=view&idx=178&page=1",
+      "keywords": [
+        "선재스님",
+        "고추간장",
+        "당근국수",
+        "취나물"
+      ]
+    },
+    {
+      "id": "pokeallday",
+      "name": "포케올데이 신메뉴",
+      "url": "https://pokeallday.co.kr/new_menu",
+      "keywords": [
+        "신메뉴",
+        "NEW",
+        "포케",
+        "소스"
+      ]
+    },
+    {
+      "id": "slowcali",
+      "name": "슬로우캘리",
+      "url": "https://www.slowcali.co.kr/bbs/content.php?co_id=menu",
+      "keywords": [
+        "New Line up",
+        "포케",
+        "샐러드",
+        "소스"
+      ]
+    },
+    {
+      "id": "salyotte",
+      "name": "샐요뜨",
+      "url": "https://sites.google.com/view/saeryotteu/메뉴",
+      "keywords": [
+        "샐러드",
+        "포케",
+        "요거트",
+        "메뉴"
+      ]
+    },
+    {
+      "id": "subway",
+      "name": "써브웨이",
+      "url": "https://www.subway.co.kr/",
+      "keywords": [
+        "메뉴소개",
+        "샌드위치",
+        "What's New",
+        "로티세리"
+      ]
+    }
+  ]
+}
