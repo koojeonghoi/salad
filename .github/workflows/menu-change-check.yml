@@ -2,8 +2,11 @@ name: Daily official menu change check
 
 on:
   schedule:
-    # Every day at 09:10 KST (00:10 UTC)
+    # 매일 한국시간 오전 9시 10분
+    # GitHub Actions의 cron은 UTC 기준이므로 00:10으로 설정
     - cron: "10 0 * * *"
+
+  # Actions 화면에서 수동 실행 가능
   workflow_dispatch:
 
 permissions:
@@ -16,41 +19,56 @@ concurrency:
 
 jobs:
   detect:
+    name: detect
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
-      - name: Detect menu changes
+      - name: Detect official menu changes
         id: check
-        continue-on-error: true
+        shell: bash
         run: |
           set +e
+
           python scripts/check_menu_changes.py
           code=$?
+
           set -e
+
           echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+
+          # Python 검사 결과 코드
+          # 0: 변경 없음 또는 최초 스냅샷 생성
+          # 1: 공식 페이지 접근 오류
+          # 2: 공식 메뉴 페이지 변경 감지
+
           exit 0
 
       - name: Commit first-run snapshots
         if: steps.check.outputs.exit_code == '0'
+        shell: bash
         run: |
           if [ -n "$(git status --porcelain snapshots)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
             git add snapshots menu-change-report.md
             git commit -m "chore: initialize official menu snapshots"
             git push
+          else
+            echo "새로 생성된 기준 스냅샷이 없습니다."
           fi
 
-      - name: Upload report and candidate snapshots
+      - name: Upload menu change report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: menu-change-report
           path: |
@@ -59,16 +77,16 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
-      - name: Create or update change issue
+      - name: Create menu change issue
         if: steps.check.outputs.exit_code == '2'
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: "[메뉴 변경 감지] 공식 메뉴 페이지 확인 필요"
           content-filepath: menu-change-report.md
 
-      - name: Create fetch-error issue
+      - name: Create menu fetch error issue
         if: steps.check.outputs.exit_code == '1'
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: "[메뉴 확인 오류] 공식 페이지 수집 실패"
           content-filepath: menu-change-report.md
