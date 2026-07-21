@@ -1,5 +1,5 @@
 {
-  "checked_at_policy": "Daily by GitHub Actions; manual review required before production data update.",
+  "checked_at_policy": "GitHub Actions performs a daily official-page change check. Manual verification is required before updating production menu data.",
   "sources": [
     {
       "id": "preppers",
@@ -20,19 +20,18 @@
         "샐러디",
         "포케볼",
         "누들볼",
-        "NEW",
-        "선재"
+        "NEW"
       ]
     },
     {
       "id": "salady_event",
       "name": "샐러디 이벤트",
-      "url": "https://salady.com/_subpage/kor/news/event.php?viewMode=view&idx=178&page=1",
+      "url": "https://salady.com/_subpage/kor/news/event.php",
       "keywords": [
-        "선재스님",
-        "고추간장",
-        "당근국수",
-        "취나물"
+        "이벤트",
+        "신메뉴",
+        "출시",
+        "기간"
       ]
     },
     {
@@ -60,23 +59,35 @@
     {
       "id": "salyotte",
       "name": "샐요뜨",
-      "url": "https://sites.google.com/view/saeryotteu/메뉴",
+      "url": "https://sites.google.com/view/saeryotteu/%EB%A9%94%EB%89%B4",
       "keywords": [
         "샐러드",
         "포케",
         "요거트",
         "메뉴"
+      ],
+      "optional": true
+    },
+    {
+      "id": "subway_menu",
+      "name": "써브웨이 메뉴",
+      "url": "https://m.subway.co.kr/menu",
+      "keywords": [
+        "샌드위치",
+        "샐러드",
+        "그레인",
+        "가격"
       ]
     },
     {
-      "id": "subway",
-      "name": "써브웨이",
-      "url": "https://www.subway.co.kr/",
+      "id": "subway_event",
+      "name": "써브웨이 이벤트",
+      "url": "https://m.subway.co.kr/more/eventList",
       "keywords": [
-        "메뉴소개",
-        "샌드위치",
-        "What's New",
-        "로티세리"
+        "이벤트",
+        "New",
+        "샐러드",
+        "신메뉴"
       ]
     }
   ]
