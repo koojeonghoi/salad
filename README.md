@@ -1,17 +1,35 @@
-# 오늘의 샐러드 추천 웹앱
+# Salad 추천 + Firebase 단체 주문
 
-## 포함 파일
-- `index.html`: GitHub Pages용 단일 웹앱
-- `menu_sources.json`: 공식 메뉴 및 신메뉴 감지 대상
-- `scripts/check_menu_changes.py`: 공식 페이지 텍스트 변경 감지
-- `.github/workflows/menu-change-check.yml`: 매일 09:10(KST) 실행
-- `snapshots/`: 승인된 공식 페이지 기준 스냅샷
+## 1. Firebase 웹 설정 입력
+Firebase Console > 프로젝트 설정 > 일반 > 내 앱 > 웹 앱 > SDK 설정 및 구성에서 값을 복사해 `firebase-config.js`의 `PASTE_...` 항목을 교체합니다.
 
-## 작동 방식
-1. 첫 실행은 각 공식 페이지를 읽어 기준 스냅샷을 생성하고 커밋합니다.
-2. 다음 실행부터 공식 페이지가 변경되면 후보 스냅샷과 보고서를 만듭니다.
-3. GitHub Issue를 자동 생성합니다.
-4. 사람이 메뉴명, 가격, 판매 기간, 마곡나루 지점 판매 여부를 확인합니다.
-5. 확인된 내용만 `index.html`에 반영하고 후보 스냅샷을 승인 스냅샷으로 교체합니다.
+`databaseURL`은 기존 Realtime Database 주소로 미리 입력되어 있습니다.
 
-> 공식 사이트 변경을 곧바로 서비스 데이터에 자동 입력하지 않습니다. 페이지 개편·광고 문구 변경을 신메뉴로 오인하는 문제를 막기 위한 검토 단계입니다.
+## 2. 익명 인증 활성화
+Firebase Console > Authentication > Sign-in method > 익명(Anonymous) > 사용 설정
+
+## 3. Realtime Database 규칙 적용
+Firebase Console > Realtime Database > 규칙에서 `database.rules.json` 내용을 붙여넣고 게시합니다.
+
+- 기존 룰렛 게임 `/rooms`는 현재처럼 공개 유지됩니다.
+- 신규 주문 데이터는 `/saladOrders`에 저장됩니다.
+
+## 4. GitHub 업로드
+저장소 루트에 아래 파일을 업로드합니다.
+
+- `index.html`
+- `order-admin.html`
+- `firebase-config.js`
+- `menu-data.js`
+- `database.rules.json` (배포에는 필수 아님, 규칙 보관용)
+
+## 5. 이용 방법
+1. `order-admin.html` 접속
+2. 주문방 생성
+3. 참여 링크 복사 및 공유
+4. 참여자는 이름을 입력하고 추천 메뉴를 제출
+5. 담당자 화면에서 메뉴별/참여자별 실시간 취합
+6. 마감 후 주문서 복사 또는 CSV 다운로드
+
+## 주의
+`firebase-config.js`의 Firebase 웹 구성값은 웹앱에 포함되는 공개 식별 정보입니다. 데이터 보호는 익명 인증과 Realtime Database Security Rules가 담당합니다. 루트의 `.read: true`, `.write: true` 규칙은 다시 사용하지 마세요.
