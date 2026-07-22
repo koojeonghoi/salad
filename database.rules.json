@@ -1,0 +1,53 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      ".read": true,
+      ".write": true
+    },
+    "saladOrders": {
+      "rooms": {
+        "$roomId": {
+          "info": {
+            ".read": "auth != null",
+            ".write": "auth != null && ((!data.exists() && newData.child('managerUid').val() === auth.uid) || (data.exists() && data.child('managerUid').val() === auth.uid))",
+            ".validate": "!newData.exists() || newData.hasChildren(['title','managerUid','managerName','storeId','storeName','deadline','status','notice','createdAt'])",
+            "title": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 50" },
+            "managerUid": { ".validate": "newData.isString() && ((!data.exists() && newData.val() === auth.uid) || (data.exists() && newData.val() === data.val()))" },
+            "managerName": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 20" },
+            "storeId": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30" },
+            "storeName": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30" },
+            "deadline": { ".validate": "newData.isNumber() && newData.val() > 0" },
+            "status": { ".validate": "newData.val() === 'open' || newData.val() === 'closed' || newData.val() === 'ordered'" },
+            "notice": { ".validate": "newData.isString() && newData.val().length <= 300" },
+            "createdAt": { ".validate": "newData.isNumber() && newData.val() > 0" },
+            "$other": { ".validate": false }
+          },
+          "orders": {
+            ".read": "auth != null",
+            "$userId": {
+              ".write": "auth != null && ((auth.uid === $userId && root.child('saladOrders/rooms').child($roomId).child('info/status').val() === 'open' && root.child('saladOrders/rooms').child($roomId).child('info/deadline').val() > now) || root.child('saladOrders/rooms').child($roomId).child('info/managerUid').val() === auth.uid)",
+              ".validate": "!newData.exists() || newData.hasChildren(['uid','name','storeId','storeName','menuId','menuName','price','calories','protein','request','status','updatedAt'])",
+              "uid": { ".validate": "newData.isString() && newData.val() === $userId" },
+              "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 20" },
+              "storeId": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30" },
+              "storeName": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30" },
+              "menuId": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 50" },
+              "menuName": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100" },
+              "price": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000" },
+              "calories": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 5000" },
+              "protein": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 500" },
+              "request": { ".validate": "newData.isString() && newData.val().length <= 200" },
+              "status": { ".validate": "newData.val() === 'submitted' || newData.val() === 'cancelled'" },
+              "updatedAt": { ".validate": "newData.isNumber() && newData.val() > 0" },
+              "$other": { ".validate": false }
+            }
+          },
+          "$other": { ".validate": false }
+        }
+      },
+      "$other": { ".validate": false }
+    }
+  }
+}
