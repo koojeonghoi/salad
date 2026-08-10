@@ -223,7 +223,8 @@ def create_digest(text: str) -> str:
     ).hexdigest()
 
 
-def extract_tokens(text: str) -> set"""변경 보고서에 사용할 단어 집합을 만듭니다."""
+def extract_tokens(text: str) -> set:
+    """변경 보고서에 사용할 단어 집합을 만듭니다."""
 
     return set(
         re.findall(
